@@ -17,8 +17,6 @@ class _LoginViewState extends State<LoginView> {
   late final TextEditingController _password;
   String? _error;
 
-  _LoginViewState();
-
   @override
   void initState() {
     _email = TextEditingController();
@@ -70,77 +68,82 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Login")),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            spacing: 16,
-            children: [
-              Center(
-                child: Text(
-                  "Ingrese sus datos",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-              TextFormField(
-                controller: _email,
-                enableSuggestions: false,
-                autocorrect: false,
-                keyboardType: TextInputType.emailAddress,
-                validator: validateEmail,
-                decoration: const InputDecoration(
-                  hintText: "Enter your email here",
-                ),
-                onFieldSubmitted: (_) => _submit(),
-              ),
-              TextFormField(
-                controller: _password,
-                decoration: const InputDecoration(
-                  hintText: "Enter your password here",
-                ),
-                validator:
-                    (value) =>
-                        value == null || value.length < 8
-                            ? "Enter a valid password"
-                            : null,
-                obscureText: true,
-                enableSuggestions: false,
-                autocorrect: false,
-                textInputAction: TextInputAction.done,
-                onFieldSubmitted: (_) => _submit(),
-              ),
-
-              SizedBox(
-                height: 40,
-                child:
-                    _error != null
-                        ? Text(_error!, style: TextStyle(color: Colors.red))
-                        : null,
-              ),
-
-              ElevatedButton(
-                onPressed: _submit,
-                style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll<Color>(Colors.blue),
-                  foregroundColor: WidgetStatePropertyAll<Color>(Colors.white),
-                  padding: WidgetStatePropertyAll<EdgeInsets>(
-                    EdgeInsets.all(16),
+      body: Center(
+        child: SizedBox(
+          width: 400,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              spacing: 16,
+              children: [
+                SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    "Ingrese sus datos",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-
-                  overlayColor: WidgetStateProperty.resolveWith<Color?>((
-                    Set<WidgetState> states,
-                  ) {
-                    if (states.contains(WidgetState.pressed)) {
-                      return Colors.blue.shade900.withValues(alpha: 0.3);
-                    }
-
-                    return null;
-                  }),
                 ),
-                child: Text("Login"),
-              ),
-            ],
+                TextFormField(
+                  controller: _email,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: validateEmail,
+                  decoration: const InputDecoration(
+                    hintText: "Enter your email here",
+                  ),
+                  onFieldSubmitted: (_) => _submit(),
+                ),
+                TextFormField(
+                  controller: _password,
+                  decoration: const InputDecoration(
+                    hintText: "Enter your password here",
+                  ),
+                  validator:
+                      (value) =>
+                          value == null || value.length < 8
+                              ? "Enter a valid password"
+                              : null,
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) => _submit(),
+                ),
+
+                SizedBox(
+                  height: 30,
+                  child:
+                      _error != null
+                          ? Text(_error!, style: TextStyle(color: Colors.red))
+                          : null,
+                ),
+
+                ElevatedButton(
+                  onPressed: _submit,
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll<Color>(Colors.blue),
+                    foregroundColor: WidgetStatePropertyAll<Color>(
+                      Colors.white,
+                    ),
+                    padding: WidgetStatePropertyAll<EdgeInsets>(
+                      EdgeInsets.all(16),
+                    ),
+
+                    overlayColor: WidgetStateProperty.resolveWith<Color?>((
+                      Set<WidgetState> states,
+                    ) {
+                      if (states.contains(WidgetState.pressed)) {
+                        return Colors.blue.shade900.withValues(alpha: 0.3);
+                      }
+
+                      return null;
+                    }),
+                  ),
+                  child: Text("Login"),
+                ),
+              ],
+            ),
           ),
         ),
       ),

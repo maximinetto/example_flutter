@@ -8,8 +8,8 @@ import 'package:provider/provider.dart';
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (_) => AuthProvider(AuthService()),
-      child: MyApp(),
+      create: (_) => AuthProvider(AuthService())..load(),
+      child: const MyApp(),
     ),
   );
 }
@@ -19,20 +19,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Super App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.blue,
-          foregroundColor: Colors.white,
+    final auth = Provider.of<AuthProvider>(context);
+    return Listener(
+      behavior: HitTestBehavior.translucent,
+      onPointerDown: (_) {
+        auth.userActivityDetected();
+      },
+      child: MaterialApp(
+        title: "Super App",
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+          ),
         ),
-      ),
-      home: Consumer<AuthProvider>(
-        builder: (context, auth, _) {
-          if (auth.isLoading) return CircularProgressIndicator();
-          return auth.isAuthenticated ? HomeView() : LoginView();
-        },
+        home: Consumer<AuthProvider>(
+          builder: (context, auth, _) {
+            if (auth.isLoading) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            } else if (auth.isAuthenticated) {
+              return const HomeView();
+            } else {
+              return const LoginView();
+            }
+          },
+        ),
       ),
     );
   }
